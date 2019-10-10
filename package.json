@@ -1,0 +1,57 @@
+{
+  "name": "weekly",
+  "version": "0.0.1",
+  "description": "report weekly",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lsliangshan/weekly.git"
+  },
+  "author": {
+    "name": "Keith",
+    "email": "cheenoalive@gmail.com",
+    "website": "https://admin.plugins.dei2.com/"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lsliangshan/weekly/issues"
+  },
+  "keywords": [
+    "weekly",
+    "cli"
+  ],
+  "files": [
+    "lib",
+    "bin",
+    "ui/dist",
+    "repository/.gitkeep",
+    "webpack.config.js"
+  ],
+  "bin": {
+    "weekly": "./bin/weekly.js"
+  },
+  "engine-strict": true,
+  "homepage": "https://github.com/lsliangshan/weekly#readme",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^3.0.1",
+    "download-git-repo": "^2.0.0",
+    "handlebars": "^4.2.0",
+    "http-server": "^0.11.1",
+    "inquirer": "^7.0.0",
+    "log-symbols": "^3.0.0",
+    "lowdb": "^1.0.0",
+    "ora": "^3.4.0",
+    "portfinder": "^1.0.24",
+    "shelljs": "^0.8.3",
+    "socket.io": "^2.3.0",
+    "walk": "^2.3.14",
+    "webpack": "^4.40.2",
+    "webpack-dev-server": "^3.8.1",
+    "webpack-cli": "^3.3.9",
+    "nodegit": "^0.26.2"
+  }
+}
