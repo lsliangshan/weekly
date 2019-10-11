@@ -2,9 +2,9 @@
   "name": "weekly",
   "version": "0.0.1",
   "description": "report weekly",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
@@ -38,7 +38,6 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "commander": "^3.0.1",
-    "download-git-repo": "^2.0.0",
     "handlebars": "^4.2.0",
     "http-server": "^0.11.1",
     "inquirer": "^7.0.0",

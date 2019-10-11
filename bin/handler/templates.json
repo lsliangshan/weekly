@@ -1,0 +1,25 @@
+{
+  "repositories": [
+    {
+      "name": "pc-company",
+      "url": "http://gitlab.dev.zhaopin.com/front-end-projects/node-c-pcweb-company",
+      "username": "liang.shan",
+      "password": "*#Keith*#",
+      "active": false
+    },
+    {
+      "name": "chalk",
+      "url": "https://github.com/chalk/chalk",
+      "username": "liang.shan",
+      "password": "",
+      "active": true
+    },
+    {
+      "name": "pc-job",
+      "url": "http://gitlab.dev.zhaopin.com/front-end-projects/node-c-pcweb-job",
+      "username": "liang.shan",
+      "password": "*#Keith*#",
+      "active": false
+    }
+  ]
+}

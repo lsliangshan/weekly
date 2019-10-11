@@ -1,3 +1,5 @@
+const portfinder = require('portfinder')
+const exec = require('child_process').exec
 function _getFirstDayTs (date) {
   if (!date || typeof (date) === "string") {
     this.error("参数异常，请检查...");
@@ -39,7 +41,39 @@ function formatDate (date) {
   return year + '-' + month + '-' + d + ' ' + hour + ':' + minute + ':' + second
 }
 
+function killPort (port) {
+  return new Promise((resolve, reject) => {
+    var order = `lsof -i:${port}`;
+    exec(order, function (err, stdout, stderr) {
+      if (err) { return }
+      stdout.split('\n').filter(function (line) {
+        var p = line.trim().split(/\s+/);
+        var address = p[1];
+        if (address != undefined && address != 'PID') {
+          exec('kill ' + address, function (err, stdout, stderr) {
+          })
+        }
+      })
+      resolve(true)
+    })
+  })
+}
+
+function getPortsPromise (count, options = {}) {
+  return new Promise((resolve) => {
+    portfinder.getPorts(count, options, (err, ports) => {
+      if (err) {
+        resolve([])
+      } else {
+        resolve(ports || [])
+      }
+    })
+  })
+}
+
 module.exports = {
   getThisWeekTs,
-  formatDate
+  formatDate,
+  getPortsPromise,
+  killPort
 }
