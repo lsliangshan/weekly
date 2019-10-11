@@ -3,11 +3,13 @@ const logSymbols = require('log-symbols')
 const ora = require('ora')
 const spinner = ora('创建socket服务')
 const kit = require('./kit')
+const repo = require('./handler/repo')
+
 async function commandHandler (data, socket) {
   let action = data.action.toLowerCase()
   switch (action) {
-    case 'cd':
-      // kit.execCd(data, socket)
+    case 'list-repositories':
+      repo.listRepositories(data, socket)
       break
     default:
       break
@@ -29,6 +31,7 @@ async function createSocketServer (args) {
       socket.emit('hi', Array.from(process.env))
 
       socket.on('exec', (data) => {
+        console.log(`【${data.action}】: ${JSON.stringify(data.data, null, 2)}`)
         commandHandler(data, socket)
       })
 

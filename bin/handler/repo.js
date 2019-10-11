@@ -5,6 +5,7 @@ const chalk = require('chalk')
 const logSymbols = require('log-symbols')
 const pkg = require('../../package.json')
 const shelljs = require('shelljs')
+const kit = require('../kit')
 const sep = path.sep
 
 const rootPath = path.resolve(__dirname, `.${sep}`)
@@ -13,7 +14,6 @@ let db = low(adapter)
 const dbKey = 'repositories'
 db.defaults({
   repositories: [
-
   ]
 }).write()
 // const defaultRepository = {
@@ -245,8 +245,18 @@ const getRepoByName = (name) => {
   return (templateConfig || {})
 }
 
-const listRepositories = () => {
+const listRepositories = (data, socket) => {
   let repositories = db.get(dbKey).value()
+  socket.emit(kit.getActionName(data.action), {
+    id: data.data.id,
+    repositories: repositories.map(item => {
+      return {
+        name: item.name,
+        url: item.url,
+        active: item.active
+      }
+    })
+  })
   return (repositories || [])
 }
 

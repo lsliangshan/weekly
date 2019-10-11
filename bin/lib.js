@@ -28,6 +28,7 @@ const getCommits = (filePath, limitTs) => {
     let commitsInfo = []
     Git.Repository.open(filePath).then(repo => {
       // return repo.getBranchCommit('master')
+      // return repo.getBranchCommit('name')
       return repo.getMasterCommit()
     }).then(firstCommitOnMaster => {
       let history = firstCommitOnMaster.history();
@@ -66,17 +67,22 @@ const getCommits = (filePath, limitTs) => {
         })
         // Use commits
         console.log('End: ', commitsInfo)
-        res[0].getDiff().then(function (arrayDiff) {
-          // Use treeEntry
-          console.log('.....', arrayDiff.getStats())
-          // tree.entries().forEach(item => {
-          //   if (item.isDirectory()) {
-          //     console.log('【文件夹】' + item.name())
-          //   } else {
-          //     console.log('    ' + chalk.yellow(item.name()))
-          //   }
-          // })
-        });
+        // res[0].createRevWalk().commitWalk(10).then(function (stdVectorGitCommit) {
+        //   console.log('stdVectorGitCommit: ', stdVectorGitCommit)
+        // });
+        // res[0].getTree().then(function (treeEntry) {
+        //   // Use treeEntry
+        //   // console.log('.....', treeEntry.entries())
+        //   // revwalk.fileHistoryWalk(filePath, max_count).then(function (arrayHistoryEntry) {
+        //   // })
+        //   // tree.entries().forEach(item => {
+        //   //   if (item.isDirectory()) {
+        //   //     console.log('【文件夹】' + item.name())
+        //   //   } else {
+        //   //     console.log('    ' + chalk.yellow(item.name()))
+        //   //   }
+        //   // })
+        // });
         resolve(commitsInfo)
       });
       // Start emitting events.

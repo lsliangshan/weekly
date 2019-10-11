@@ -64,3 +64,5 @@ typings/
 
 repository/**/*
 !repository/.gitkeep
+
+reports/**/*

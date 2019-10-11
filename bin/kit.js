@@ -71,9 +71,14 @@ function getPortsPromise (count, options = {}) {
   })
 }
 
+function getActionName (action) {
+  return action.toUpperCase().replace(/-/g, '_')
+}
+
 module.exports = {
   getThisWeekTs,
   formatDate,
   getPortsPromise,
-  killPort
+  killPort,
+  getActionName
 }
