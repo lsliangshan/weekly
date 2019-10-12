@@ -65,6 +65,8 @@ typings/
 repository/**/*
 !repository/.gitkeep
 
+!env.json
+
 reports/**/*
 
 bin/handler/templates.json
