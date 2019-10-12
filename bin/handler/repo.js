@@ -242,6 +242,7 @@ const getRepoByName = (name) => {
   let templateConfig = db.get(dbKey).find({
     name: name
   }).value()
+
   return (templateConfig || {})
 }
 

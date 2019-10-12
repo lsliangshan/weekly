@@ -8,10 +8,8 @@ import mixins from './mixins'
 // import io from 'socket.io-client'
 import VueSocketIO from 'vue-socket.io'
 import * as filters from './filters'
-// import iView from 'iview'
-// import 'iview/dist/styles/iview.css'
 import './themes/styles/index.less'
-import { Notice, Message } from 'iview'
+import { Notice, Message } from 'view-design'
 
 Vue.prototype.$Notice = Notice
 Vue.prototype.$Message = Message
