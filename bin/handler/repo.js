@@ -247,6 +247,8 @@ const getRepoByName = (name) => {
 }
 
 const listRepositories = (data, socket) => {
+  adapter = new FileSync(rootPath + sep + 'templates.json')
+  db = low(adapter)
   let repositories = db.get(dbKey).value()
   socket.emit(kit.getActionName(data.action), {
     id: data.data.id,
