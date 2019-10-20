@@ -6,7 +6,9 @@
         <div class="generate-form">
           <Form :label-width="90"
                 label-colon
-                :model="generateFormData">
+                ref="generateFromRef"
+                :model="generateFormData"
+                :rules="generateFormRule">
             <FormItem label="仓库">
               <Select v-model="activeRepo"
                       label-in-value
@@ -29,7 +31,7 @@
               </Select>
             </FormItem>
             <FormItem label="仓库地址"
-                      required>
+                      prop="url">
               <Input placeholder="请输入仓库地址"
                      :disabled="activeRepo !== 'default'"
                      v-model="generateFormData.url"
@@ -198,6 +200,15 @@ export default {
         username: '',
         password: '',
         date: []
+      },
+      generateFormRule: {
+        url: [
+          {
+            required: true,
+            message: '请输入仓库地址',
+            trigger: 'blur'
+          }
+        ]
       },
       reportDateOptions: {
         shortcuts: [
@@ -371,14 +382,21 @@ export default {
     },
     generate () {
       // 生成周报
-      this.generateFormData.date = this.generateDate.map(item => item.getTime())
       this.isGenerating = true
-      this.$exec({
-        action: 'generate',
-        data: this.generateFormData
+      this.$refs.generateFromRef.validate(valid => {
+        if (valid) {
+          this.generateFormData.date = this.generateDate.map(item => item.getTime())
+          this.$exec({
+            action: 'generate',
+            data: this.generateFormData
+          })
+          this.currentRepo = JSON.parse(JSON.stringify(this.generateFormData))
+          this.setInputManually(false)
+        } else {
+          this.isGenerating = false
+          this.$Message.error('表单填写不正确!')
+        }
       })
-      this.currentRepo = JSON.parse(JSON.stringify(this.generateFormData))
-      this.setInputManually(false)
     },
     getName (name) {
       let userMap = JSON.parse(JSON.stringify(this.userMap))

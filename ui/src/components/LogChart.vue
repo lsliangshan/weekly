@@ -205,7 +205,8 @@ export default {
   data () {
     return {
       parentBox: {},
-      data: []
+      data: [],
+      type: 'pie' // pie: 饼状图；column: 柱状图
     }
   },
   mounted () {
@@ -231,6 +232,62 @@ export default {
         }
       })
     },
+    initChartPie (chart) {
+      // 饼状图
+      chart.legend({
+        position: 'right-center',
+        offsetX: -100
+      })
+      chart.coord('theta', {
+        radius: 0.75
+      })
+      chart.intervalStack().position('commits').color('name').style({
+        stroke: 'white',
+        lineWidth: 1
+      }).label('name', val => {
+        return {
+          offset: -10,
+          textStyle: {
+            fill: '#1d1e23',
+            fontSize: 14,
+            shadowBlur: 2,
+            shadowColor: 'rgba(0, 0, 0, .45)'
+          },
+          formatter: function formatter (text) {
+            return text
+          }
+        }
+      })
+    },
+    initChartColumn (chart) {
+      // 柱状图
+      chart.scale('commits', {
+        alias: '提交次数（次）'
+      })
+      chart.axis('name', {
+        label: {
+          textStyle: {
+            fill: '#aaaaaa'
+          }
+        },
+        tickLine: {
+          alignWithLabel: false,
+          length: 0
+        }
+      });
+      chart.axis('commits', {
+        label: {
+          textStyle: {
+            fill: '#aaaaaa'
+          },
+        },
+        title: {
+          offset: 60
+        }
+      });
+      chart.interval().position('name*commits').color('name')
+
+    },
     initChart () {
       this.$nextTick(() => {
         let chart = new G2.Chart({
@@ -238,37 +295,19 @@ export default {
           width: this.parentBox.width || 530,
           height: this.parentBox.height || 500,
           padding: [50, 'auto', 'auto', 'auto']
-          // theme: 'dark'
         })
         chart.source(this.data)
-        chart.scale('commits', {
-          alias: '提交次数（次）'
-          // ,
-          // tickInterval: 1
-        })
-        chart.axis('name', {
-          label: {
-            textStyle: {
-              fill: '#aaaaaa'
-            }
-          },
-          tickLine: {
-            alignWithLabel: false,
-            length: 0
-          }
-        });
-        chart.axis('commits', {
-          label: {
-            textStyle: {
-              // fill: '#aaaaaa'
-            },
-          },
-          title: {
-            offset: 60
-          }
-        });
-        // chart.legend(false)
-        chart.interval().position('name*commits').color('name')
+        switch (this.type) {
+          case 'column':
+            this.initChartColumn(chart)
+            break
+          case 'pie':
+            this.initChartPie(chart)
+            break
+          default:
+            this.initChartColumn(chart)
+            break
+        }
         chart.render()
       })
     }
