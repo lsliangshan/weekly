@@ -9,6 +9,7 @@ program
 
 let args = JSON.parse(JSON.stringify(process.argv))
 if (args.length < 3) {
+  lib.help()
   return
 }
 args.shift()

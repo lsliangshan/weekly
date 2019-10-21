@@ -3,14 +3,28 @@
        ref="logChartContainer">
     <div id="log-chart">
     </div>
+
+    <div class="chart-type-toggle"
+         @click="toggleChartType">
+      <Tooltip content="切换图表类型"
+               placement="left">
+        <svg>
+          <use :xlink:href="'#chart-' + (type === 'pie' ? 'column': 'pie')"></use>
+        </svg>
+      </Tooltip>
+    </div>
   </div>
 </template>
 
 <script>
+import { Tooltip } from 'view-design'
 import G2 from '@antv/g2'
 G2.Global.renderer = 'svg'
 export default {
   name: 'LogChart',
+  components: {
+    Tooltip
+  },
   props: {
     commits: {
       type: Object,
@@ -206,7 +220,8 @@ export default {
     return {
       parentBox: {},
       data: [],
-      type: 'pie' // pie: 饼状图；column: 柱状图
+      chart: null,
+      type: 'column' // pie: 饼状图；column: 柱状图
     }
   },
   mounted () {
@@ -232,16 +247,16 @@ export default {
         }
       })
     },
-    initChartPie (chart) {
+    initChartPie () {
       // 饼状图
-      chart.legend({
+      this.chart.legend({
         position: 'right-center',
-        offsetX: -100
+        offsetX: -50
       })
-      chart.coord('theta', {
+      this.chart.coord('theta', {
         radius: 0.75
       })
-      chart.intervalStack().position('commits').color('name').style({
+      this.chart.intervalStack().position('commits').color('name').style({
         stroke: 'white',
         lineWidth: 1
       }).label('name', val => {
@@ -259,15 +274,15 @@ export default {
         }
       })
     },
-    initChartColumn (chart) {
+    initChartColumn () {
       // 柱状图
-      chart.scale('commits', {
+      this.chart.scale('commits', {
         alias: '提交次数（次）'
       })
-      chart.axis('name', {
+      this.chart.axis('name', {
         label: {
           textStyle: {
-            fill: '#aaaaaa'
+            fill: '#aaa'
           }
         },
         tickLine: {
@@ -275,41 +290,48 @@ export default {
           length: 0
         }
       });
-      chart.axis('commits', {
+      this.chart.axis('commits', {
         label: {
           textStyle: {
-            fill: '#aaaaaa'
+            fill: '#888'
           },
         },
         title: {
           offset: 60
         }
       });
-      chart.interval().position('name*commits').color('name')
+      this.chart.interval().position('name*commits').color('name')
 
     },
     initChart () {
       this.$nextTick(() => {
-        let chart = new G2.Chart({
+        if (this.chart) {
+          this.chart.destroy()
+        }
+        this.chart = new G2.Chart({
           container: 'log-chart',
           width: this.parentBox.width || 530,
           height: this.parentBox.height || 500,
           padding: [50, 'auto', 'auto', 'auto']
         })
-        chart.source(this.data)
+        this.chart.source(this.data)
         switch (this.type) {
           case 'column':
-            this.initChartColumn(chart)
+            this.initChartColumn()
             break
           case 'pie':
-            this.initChartPie(chart)
+            this.initChartPie()
             break
           default:
-            this.initChartColumn(chart)
+            this.initChartColumn()
             break
         }
-        chart.render()
+        this.chart.render()
       })
+    },
+    toggleChartType () {
+      this.type = (this.type === 'pie' ? 'column' : 'pie')
+      this.initChart()
     }
   },
   watch: {
@@ -333,5 +355,22 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  .chart-type-toggle {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: #2b5b5b;
+      cursor: pointer;
+    }
+  }
 }
 </style>

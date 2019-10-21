@@ -646,7 +646,8 @@ export default {
                     align-items: flex-start;
                     justify-content: flex-start;
                     .body-item-index {
-                      width: 25px;
+                      width: 30px;
+                      white-space: nowrap;
                     }
                     .body-item-content {
                       flex: 1;

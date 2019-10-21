@@ -235,6 +235,15 @@ const whoami = () => {
 //   console.log(logSymbols.success, `服务已启动：http://127.0.0.1:${port}`)
 // }
 
+const help = () => {
+  showVersion()
+  console.log('  可用命令: \n')
+  console.log('    ui\t\t\t启动可视化生成报告')
+  console.log('    repository, repo\t模板仓库管理')
+  console.log('    help, ?\t\t显示帮助信息')
+  console.log('\n')
+}
+
 const repository = (args) => {
   showVersion()
   if (args.length !== 0) {
@@ -250,5 +259,9 @@ module.exports = {
   whoami,
   create: Server.create,
   ui: Server.ui,
-  repository
+  repository,
+  repo: repository,
+  help,
+  '?': help,
+  '？': help
 }

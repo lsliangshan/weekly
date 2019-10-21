@@ -1,6 +1,6 @@
 {
   "name": "weekly2",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "report weekly",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
