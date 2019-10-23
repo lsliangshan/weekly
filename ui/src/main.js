@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import { getHeader } from './utils'
+import { getHeader, getQuery } from './utils'
 import { sync } from 'vuex-router-sync'
 import router from './router'
 import store from './store'
@@ -24,7 +24,7 @@ Vue.mixin(mixins);
   } catch (err) {
 
   }
-  port = port || 8200
+  port = port || getQuery('ws') || 8200
   // console.log('.... connect port 66666: ', port)
   // let news = io.connect(`http://127.0.0.1:${port}/${port}`)
   // news.on('hi', (data) => {

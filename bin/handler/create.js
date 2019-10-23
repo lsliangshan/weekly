@@ -201,7 +201,7 @@ const ui = async () => {
   } else {
     shelljs.cd(path.resolve(__dirname, `..${sep}ui`))
   }
-  console.log('>>2>>', process.cwd())
+  console.log(process.cwd())
   const enkelConfig = {
     port: port,
     socket: {

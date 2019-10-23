@@ -136,39 +136,46 @@ const add = (args) => {
       repoUrl = item
     } else { }
   })
-  if (!repoName) {
-    console.log('')
-    console.log(logSymbols.error, '缺少参数【仓库名】\n')
-  } else if (!repoUrl) {
-    console.log('')
-    console.log(logSymbols.error, '缺少参数【仓库地址】\n')
-  } else {
-    shelljs.exec(`curl ${repoUrl}`, (code, stdout, stderr) => {
-      if (code !== 0) {
-        console.log('')
-        console.log(logSymbols.error, `仓库地址【${chalk.yellow(repoUrl)}】无法访问，请重新设置\n`)
-      } else {
-        let exists = db.get(dbKey).find({
-          name: repoName
-        }).value()
-        if (!exists || !exists.name) {
-          let repositories = db.get(dbKey).value()
-          db.get(dbKey).push({
-            name: repoName,
-            url: repoUrl,
-            username: username,
-            password: password,
-            active: repositories.length === 0 // 当前选中的仓库
-          }).write()
+  return new Promise((resolve, reject) => {
+    if (!repoName) {
+      console.log('')
+      console.log(logSymbols.error, '缺少参数【仓库名称】\n')
+      reject(new Error('缺少参数【仓库名称】'))
+    } else if (!repoUrl) {
+      console.log('')
+      console.log(logSymbols.error, '缺少参数【仓库地址】\n')
+      reject(new Error('缺少参数【仓库地址】'))
+    } else {
+      shelljs.exec(`curl ${repoUrl}`, (code, stdout, stderr) => {
+        if (code !== 0) {
           console.log('')
-          console.log(logSymbols.success, `仓库【${chalk.green(repoName)}】添加成功\n`)
+          console.log(logSymbols.error, `仓库地址【${chalk.yellow(repoUrl)}】无法访问，请重新设置\n`)
+          reject(new Error(`仓库地址【${repoUrl}】无法访问，请重新设置`))
         } else {
-          console.log('')
-          console.log(logSymbols.error, `仓库【${chalk.yellow(repoName)}】已经存在\n`)
+          let exists = db.get(dbKey).find({
+            name: repoName
+          }).value()
+          if (!exists || !exists.name) {
+            let repositories = db.get(dbKey).value()
+            db.get(dbKey).push({
+              name: repoName,
+              url: repoUrl,
+              username: username,
+              password: password,
+              active: repositories.length === 0 // 当前选中的仓库
+            }).write()
+            console.log('')
+            console.log(logSymbols.success, `仓库【${chalk.green(repoName)}】添加成功\n`)
+            resolve(`仓库【${repoName}】添加成功`)
+          } else {
+            console.log('')
+            console.log(logSymbols.error, `仓库【${chalk.yellow(repoName)}】已经存在\n`)
+            reject(new Error(`仓库【${repoName}】已经存在`))
+          }
         }
-      }
-    })
-  }
+      })
+    }
+  })
 }
 
 const update = (args) => {
@@ -263,6 +270,40 @@ const listRepositories = (data, socket) => {
   return (repositories || [])
 }
 
+const addPepoFromWeb = async (data, socket) => {
+  let formatData = []
+  if (data.data.name) {
+    formatData.push(data.data.name)
+  }
+  if (data.data.url) {
+    formatData.push(data.data.url)
+  }
+  if (data.data.username) {
+    formatData.push('u=' + data.data.username)
+  }
+  if (data.data.password) {
+    formatData.push('p=' + data.data.password)
+  }
+  console.log('>>>>>>>>>', formatData)
+  await add(formatData).then(res => {
+    socket.emit(kit.getActionName(data.action), {
+      id: data.data.id || '',
+      status: 1, // 0: 失败，1: 成功
+      name: data.data.name,
+      url: data.data.url,
+      message: res
+    })
+  }).catch(err => {
+    socket.emit(kit.getActionName(data.action), {
+      id: data.data.id || '',
+      status: 0, // 0: 失败， 1: 成功
+      name: data.data.name,
+      url: data.data.url,
+      message: err.message
+    })
+  })
+}
+
 module.exports = {
   ls,
   list: ls,
@@ -279,5 +320,6 @@ module.exports = {
   delete: del,
   getCurrentRepo,
   getRepoByName,
-  listRepositories
+  listRepositories,
+  addPepoFromWeb
 }

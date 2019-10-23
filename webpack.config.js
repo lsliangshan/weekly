@@ -6,7 +6,7 @@ module.exports = {
     "contentBase": "ui/dist",
     "hot": true,
     "headers": {
-      "Wsp": 8200,
+      "Wsp": 8201,
       "X-Powered-By": "Enkel"
     }
   }

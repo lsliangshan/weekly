@@ -33,10 +33,10 @@ const postCommitInfo = (info, socket) => {
 const getCommits = (filePath, limitTs, socket) => {
   return new Promise((resolve, reject) => {
     let commitsInfo = []
-    Git.Repository.open(filePath).then(repo => {
+    Git.Repository.open(filePath).then(repository => {
       // return repo.getBranchCommit('master')
       // return repo.getBranchCommit('name')
-      return repo.getMasterCommit()
+      return repository.getMasterCommit()
     }).then(firstCommitOnMaster => {
       let history = firstCommitOnMaster.history();
       // Listen for commit events from the history.
@@ -266,6 +266,9 @@ async function commandHandler (data, socket) {
       break
     case 'generate':
       create(data.data, socket)
+      break
+    case 'save-repo':
+      repo.addPepoFromWeb(data, socket)
       break
     default:
       break
