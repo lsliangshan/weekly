@@ -89,7 +89,10 @@
             </FormItem>
           </Form>
           <div class="generate-form-bottom">
-            <!-- <div class="generate-form-bottom-item"></div> -->
+            <div class="generate-form-bottom-item"
+                 @click="downloadPdf">
+              PDF
+            </div>
             <div class="generate-form-bottom-item"
                  @click="toggleCommitsType">{{showChart ? '文本' : '图表'}}</div>
           </div>
@@ -431,6 +434,9 @@
       },
       toggleCommitsType () {
         this.showChart = !this.showChart
+      },
+      downloadPdf () {
+
       }
     }
   }
