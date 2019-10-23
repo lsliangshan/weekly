@@ -10,6 +10,7 @@ const ora = require('ora')
 const shelljs = require('shelljs')
 // const Server = require('./server')
 const repo = require('./handler/repo')
+const puppeteer = require('./handler/puppeteer')
 
 const spinner = ora('创建socket服务')
 const env = require('../env.json')
@@ -269,6 +270,9 @@ async function commandHandler (data, socket) {
       break
     case 'save-repo':
       repo.addPepoFromWeb(data, socket)
+      break
+    case 'create-pdf':
+      puppeteer.pdf(data, socket)
       break
     default:
       break

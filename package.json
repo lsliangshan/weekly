@@ -47,7 +47,7 @@
     "nodegit": "^0.26.2",
     "ora": "^3.4.0",
     "portfinder": "^1.0.24",
-    "puppeteer-core": "^1.20.0",
+    "puppeteer": "^1.20.0",
     "shelljs": "^0.8.3",
     "socket.io": "^2.3.0",
     "walk": "^2.3.14",
