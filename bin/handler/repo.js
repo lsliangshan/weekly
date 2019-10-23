@@ -284,7 +284,6 @@ const addPepoFromWeb = async (data, socket) => {
   if (data.data.password) {
     formatData.push('p=' + data.data.password)
   }
-  console.log('>>>>>>>>>', formatData)
   await add(formatData).then(res => {
     socket.emit(kit.getActionName(data.action), {
       id: data.data.id || '',
