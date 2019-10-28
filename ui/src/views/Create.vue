@@ -155,6 +155,41 @@
                     </div>
                   </div>
                 </div>
+                <!-- <div class="generate-result-content-body"
+                     style="width: 100%; height: calc(100% - 48px); padding: 20px 10px 10px 10px; box-sizing: border-box; overflow-y: auto;"
+                     id="commit-info-body">
+                  <div class="content-item"
+                       style="width: 100%; margin-bottom: 10px;"
+                       v-for="(commits, name) in commitInfo"
+                       :key="commits[0].commit">
+                    <div class="content-item-header"
+                         style="width: 100%; height: 20px; border-left: 6px solid @primary-color; padding-left: 16px; margin: 20px 0; box-sizing: border-box; color: #282828; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                      <div class="content-item-header-name"
+                           style="font-size: 14px;">
+                        {{name}}
+                      </div>
+                      <div class="content-item-header-email"
+                           style="font-size: 13px; margin-left: 20px; color: #9e9e9e;">
+                        &lt; {{commits[0].author.email}} &gt;
+                      </div>
+                    </div>
+                    <div class="content-item-body">
+                      <div class="content-item-body-item"
+                           style="padding: 0 10px 0 0; color: #666666; font-size: 14px; word-break: break-all; margin: 10px 0; display: flex; flex-direction: row; align-items: flex-start; justify-content: flex-start;"
+                           v-for="(commit, index) in commits"
+                           :key="commit.commit">
+                        <div class="body-item-index"
+                             style="width: 30px; white-space: nowrap; text-align: right; margin-right: 8px;">
+                          {{index + 1}}.
+                        </div>
+                        <div class="body-item-content"
+                             style="flex: 1;">
+                          {{commit.message.replace(/[\r\n]/g, '')}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
               </div>
             </transition>
             <transition name="fade">
@@ -312,6 +347,24 @@ export default {
               const end = new Date();
               const start = new Date();
               start.setTime(start.getTime() - 2 * 2 * 3600 * 1000 * 24 * 90);
+              return [start, end];
+            }
+          },
+          {
+            text: '最近2年',
+            value () {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 2 * 2 * 2 * 3600 * 1000 * 24 * 90);
+              return [start, end];
+            }
+          },
+          {
+            text: '最近3年',
+            value () {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3 * 2 * 2 * 3600 * 1000 * 24 * 90);
               return [start, end];
             }
           }

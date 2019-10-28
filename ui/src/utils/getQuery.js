@@ -1,7 +1,7 @@
 export default function getQuery (name) {
   let search = location.search.substring(1)
   if (!search) {
-    return {}
+    return name ? '' : {}
   }
   let query = {}
   search.split('&').forEach(item => {
